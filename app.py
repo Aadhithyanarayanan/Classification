@@ -20,7 +20,6 @@ td = bz2.BZ2File('vectorizer.pbz2', 'rb')
 td = pickle.load(td)
 
 
-UPLOAD_FOLDER = "static"
 ALLOWED_EXTENSION = set(['jpeg','jpg','png'])
 
 def allowed_file(filename):
@@ -97,7 +96,6 @@ def upload_media():
             x=0
 
         if x==0:
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return jsonify({'msg':1})
         else:
             return jsonify({'msg':0})
