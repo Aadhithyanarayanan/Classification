@@ -1,13 +1,12 @@
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
-import cv2
 import tensorflow as tf
 import numpy as np
 from flask_cors import CORS
+import imageio
 
 model = tf.keras.models.load_model('imageclassifier.h5')
 
-UPLOAD_FOLDER = "static"
 ALLOWED_EXTENSION = set(['jpeg','jpg','png'])
 
 def allowed_file(filename):
@@ -34,8 +33,8 @@ def upload_media():
 
         img_content = file.read()
 
-        npimg = np.fromstring(img_content, np.uint8)
-        img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
+        img = imageio.imread(img_content)
+
         resize = tf.image.resize(img, (256,256))
         pred = model.predict(np.expand_dims(resize/255, 0))
         if pred > 0.6: 
